@@ -69,7 +69,9 @@ def lambda_handler(event, context):
 
     if ddb_check is None:
         print("Item not present in DynamoDB, start polly task")
-        response = polly_client.start_speech_synthesis_task(VoiceId=voiceId,
+        response = polly_client.start_speech_synthesis_task(Engine='neural',
+                                                            LanguageCode='es-ES',
+                                                            VoiceId='Lucia'
                                                             OutputS3BucketName=bucketName,
                                                             OutputS3KeyPrefix=mp3Prefix,
                                                             OutputFormat='mp3',

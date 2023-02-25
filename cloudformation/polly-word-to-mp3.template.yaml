@@ -85,7 +85,7 @@ Resources:
         Variables:
           pollyMetadataTable: !Ref 'WordToPollyMetadata'
       Handler: ssml-to-mp3.lambda_handler
-      Runtime: python3.6
+      Runtime: python3.9
       Timeout: '300'
       Role: !GetAtt 'PollyWordConverterLambdaRole.Arn'
   m3uBuilderFunction:
@@ -98,7 +98,7 @@ Resources:
         Variables:
           pollyMetadataTable: !Ref 'WordToPollyMetadata'
       Handler: m3u-generator.lambda_handler
-      Runtime: python3.6
+      Runtime: python3.9
       Timeout: '300'
       Role: !GetAtt 'PollyWordConverterLambdaRole.Arn'
   PollyWordReaderFunction:
