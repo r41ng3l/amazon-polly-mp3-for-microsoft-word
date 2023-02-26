@@ -71,7 +71,7 @@ def lambda_handler(event, context):
         print("Item not present in DynamoDB, start polly task")
         response = polly_client.start_speech_synthesis_task(Engine='neural',
                                                             LanguageCode='es-ES',
-                                                            VoiceId='Lucia'
+                                                            VoiceId='Lucia',
                                                             OutputS3BucketName=bucketName,
                                                             OutputS3KeyPrefix=mp3Prefix,
                                                             OutputFormat='mp3',
@@ -89,6 +89,6 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps(task_status)
+        'body': json.dumps(task_status, default=str)
     }
 

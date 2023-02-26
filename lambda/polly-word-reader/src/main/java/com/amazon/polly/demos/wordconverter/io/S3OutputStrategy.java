@@ -18,10 +18,19 @@ public class S3OutputStrategy implements OutputStrategy {
         StringInputStream contentStream = new StringInputStream(outputContext.getContent());
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(outputContext.getContent().getBytes().length);
+		String fileNameUnsanitized = outputContext.getPrefix() + outputContext.getFileName() + ".txt";
+		String fileNameSanitized = fileNameUnsanitized
+									.replaceAll("[áàâä]", "a")
+									.replaceAll("[éèêë]", "e")
+									.replaceAll("[íìîï]", "i")
+									.replaceAll("[óòôö]", "o")
+									.replaceAll("[úùûü]", "u")
+                                    .replaceAll("ñ", "n")
+				    .replaceAll(":", "");
 
         PutObjectRequest putObjectRequest = new PutObjectRequest(
                 outputContext.getBucketName(),
-                outputContext.getPrefix() + outputContext.getFileName() + ".txt",
+                fileNameSanitized,
                 contentStream,
                 metadata);
 
