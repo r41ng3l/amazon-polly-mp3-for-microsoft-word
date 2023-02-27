@@ -14,29 +14,11 @@ regex_number = "\d{1,3}"
 
 final_list = []
 
-def parseSection(line):
-    match =  re.search(regex_section, line)
+def parseColumn(line, regex):
+    match =  re.search(regex, line)
     if (match):
-        section = match.group(0)
-        match_number = re.search(regex_number, section)
-        return match_number.group(0)
-    else:
-        return 0
-
-def parseTopic(line):
-    match =  re.search(regex_topic, line)
-    if (match):
-        topic = match.group(0)
-        match_number = re.search(regex_number, topic)
-        return match_number.group(0)
-    else:
-        return 0
-
-def parsePara(line):
-    match =  re.search(regex_paragraph, line)
-    if (match):
-        para = match.group(0)
-        match_number = re.search(regex_number, para)
+        column = match.group(0)
+        match_number = re.search(regex_number, column)
         return match_number.group(0)
     else:
         return 0
@@ -47,9 +29,9 @@ with open(m3u) as m3u:
 for line in line_string_list:
   line_list = []
   line_list.append(line)
-  line_list.append(parseSection(line))
-  line_list.append(parseTopic(line))
-  line_list.append(parsePara(line))
+  line_list.append(parseColumn(line,regex_section))
+  line_list.append(parseColumn(line,regex_topic))
+  line_list.append(parseColumn(line,regex_paragraph))
   final_list.append(line_list)
     
 df = pd.DataFrame(final_list)
@@ -59,11 +41,6 @@ df[3] = df[3].astype(int)
 df_sort = df.sort_values(by=[1,2,3])
 df_sort = df_sort.reset_index(drop=True)
 
-
-
 with open(sorted_m3u, 'w') as m3u_sorted:
     for x in range(len(line_string_list)):
-        print(df_sort.at[x,0], file=m3u_sorted)
-
-# print(df_sort)
-# print(df_sort[0])
+        print((df_sort.at[x,0]).strip('\n'), file=m3u_sorted)
